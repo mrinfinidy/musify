@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'body.dart';
 
 void main() {
     runApp( Musify() );
@@ -12,23 +13,11 @@ class Musify extends StatefulWidget {
 }
 
 class _MusifyState extends State<Musify> {
-
-    String bodyText = 'Musify';
-    
-    int _selectedTabIndex = 0;
-
-    static const List<Widget> _widgetOptionsBody = <Widget>[
-        Text(
-            'Home'
-        ),
-        Text(
-            'Library'
-        ),
-    ];
+    int selectedTabIndex = 0;
 
     void _onNavItemTapped(int tabIndex) {
         setState(() {
-            _selectedTabIndex = tabIndex;
+            selectedTabIndex = tabIndex;
         });
     }
 
@@ -41,7 +30,7 @@ class _MusifyState extends State<Musify> {
                     title: const Text('Musify'),
                 ),
                 body: Center(
-                    child: _widgetOptionsBody.elementAt(_selectedTabIndex),
+                    child: BodyComponent.getBodyWidget(selectedTabIndex),
                 ),
                 bottomNavigationBar: BottomNavigationBar(
                     items: const <BottomNavigationBarItem>[
@@ -55,7 +44,7 @@ class _MusifyState extends State<Musify> {
                             label: 'Library',
                         )
                     ],
-                    currentIndex: _selectedTabIndex,
+                    currentIndex: selectedTabIndex,
                     onTap: _onNavItemTapped,
                 ),
             ),
