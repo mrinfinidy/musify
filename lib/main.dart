@@ -14,6 +14,23 @@ class Musify extends StatefulWidget {
 class _MusifyState extends State<Musify> {
 
     String bodyText = 'Musify';
+    
+    int _selectedTabIndex = 0;
+
+    static const List<Widget> _widgetOptionsBody = <Widget>[
+        Text(
+            'Home'
+        ),
+        Text(
+            'Library'
+        ),
+    ];
+
+    void _onNavItemTapped(int tabIndex) {
+        setState(() {
+            _selectedTabIndex = tabIndex;
+        });
+    }
 
     @override
     Widget build(BuildContext context) {
@@ -24,7 +41,7 @@ class _MusifyState extends State<Musify> {
                     title: const Text('Musify'),
                 ),
                 body: Center(
-                    child: Text(bodyText),
+                    child: _widgetOptionsBody.elementAt(_selectedTabIndex),
                 ),
                 bottomNavigationBar: BottomNavigationBar(
                     items: const <BottomNavigationBarItem>[
@@ -38,15 +55,8 @@ class _MusifyState extends State<Musify> {
                             label: 'Library',
                         )
                     ],
-                    onTap: (tab) {
-                        setState(() {
-                            if (tab == 0) {
-                                bodyText = 'Home';
-                            } else {
-                                bodyText = 'Library';
-                            }
-                        });
-                    },
+                    currentIndex: _selectedTabIndex,
+                    onTap: _onNavItemTapped,
                 ),
             ),
         );
