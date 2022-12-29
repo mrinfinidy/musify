@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'body.dart';
 
 void main() {
-    runApp( Musify() );
+    runApp( const Musify() );
 }
 
 class Musify extends StatefulWidget {
