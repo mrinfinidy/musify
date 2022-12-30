@@ -13,11 +13,19 @@ class Musify extends StatefulWidget {
 }
 
 class _MusifyState extends State<Musify> {
-    int selectedTabIndex = 0;
+    int selectedPageIndex = 0;
+    int _selectedTabIndex = 0;
 
     void _onNavItemTapped(int tabIndex) {
         setState(() {
-            selectedTabIndex = tabIndex;
+            _selectedTabIndex = tabIndex;
+            selectedPageIndex = _selectedTabIndex;
+        });
+    }
+
+    void _onSettingsTapped(int pageIndex) {
+        setState(() {
+            selectedPageIndex = pageIndex;
         });
     }
 
@@ -27,10 +35,20 @@ class _MusifyState extends State<Musify> {
             home: Scaffold(
                 appBar: AppBar(
                     backgroundColor: Colors.green,
-                    title: const Text('Musify'),
+                    title: Center(
+                        child:Text('Musify')
+                    ),
+                    actions: <Widget>[
+                        IconButton(
+                            icon: Icon(Icons.settings),
+                            onPressed: () {
+                                _onSettingsTapped(2);
+                            },
+                        ),
+                    ],
                 ),
                 body: Center(
-                    child: BodyComponent.getBodyWidget(selectedTabIndex),
+                    child: BodyComponent.getBodyWidget(selectedPageIndex),
                 ),
                 bottomNavigationBar: BottomNavigationBar(
                     items: const <BottomNavigationBarItem>[
@@ -44,7 +62,7 @@ class _MusifyState extends State<Musify> {
                             label: 'Library',
                         )
                     ],
-                    currentIndex: selectedTabIndex,
+                    currentIndex: _selectedTabIndex,
                     onTap: _onNavItemTapped,
                 ),
             ),
