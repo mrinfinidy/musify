@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'body.dart';
+import 'body/body.dart';
 
 void main() {
     runApp( const Musify() );
@@ -36,11 +36,11 @@ class _MusifyState extends State<Musify> {
                 appBar: AppBar(
                     backgroundColor: Colors.green,
                     title: Center(
-                        child:Text('Musify')
+                        child: const Text('Musify')
                     ),
                     actions: <Widget>[
                         IconButton(
-                            icon: Icon(Icons.settings),
+                            icon: const Icon(Icons.settings),
                             onPressed: () {
                                 _onSettingsTapped(2);
                             },

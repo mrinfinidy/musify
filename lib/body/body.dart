@@ -1,10 +1,12 @@
 import 'package:flutter/widgets.dart';
+import 'home.dart';
+import 'library.dart';
 
 class BodyComponent {
     static Widget getBodyWidget(selectedPageIndex) {
         List<Widget> widgetOptions = <Widget>[
-            const Text('Home'),
-            const Text('Library'),
+            HomeWidget.getHomeWidget(),
+            LibraryWidget.getLibraryWidget(),
             const Text('Settings'),
         ];
 
