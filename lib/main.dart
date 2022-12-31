@@ -45,6 +45,14 @@ class _MusifyState extends State<Musify> {
                     title: Center(
                         child: Text(pageTitle),
                     ),
+                    actions: <Widget>[
+                        IconButton(
+                            icon: Icon(Icons.settings),
+                            onPressed: () {
+                                setCurrentPage(2);
+                            },
+                        ),
+                    ], 
                 ),
                 body: PageComponent.getPageComponent(currentPageIndex),
                 bottomNavigationBar: BottomNavigatoin.getBottomNavigation(currentNavIndex, setCurrentNav),
