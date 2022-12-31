@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'body/body.dart';
+import 'pages/pages.dart';
 
 void main() {
     runApp( const Musify() );
@@ -47,9 +47,7 @@ class _MusifyState extends State<Musify> {
                         ),
                     ],
                 ),
-                body: Center(
-                    child: BodyComponent.getBodyWidget(selectedPageIndex),
-                ),
+                body: PageComponent.getPageComponent(selectedPageIndex),
                 bottomNavigationBar: BottomNavigationBar(
                     items: const <BottomNavigationBarItem>[
                         BottomNavigationBarItem(
