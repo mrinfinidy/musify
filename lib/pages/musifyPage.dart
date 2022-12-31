@@ -17,7 +17,7 @@ class _MusifyState extends State<MusifyPage> {
                     child: const Text('Musify'),
                 ),
                 backgroundColor: Colors.black,
-                foregroundColor: Colors.pink,
+                foregroundColor: Colors.white,
             ),
             body: Center(
                 child: TextButton(
@@ -50,7 +50,7 @@ class _HomeTabeState extends State<HomeTab> {
             appBar: AppBar(
                 title: const Text('Musify'),
                 backgroundColor: Colors.black,
-                foregroundColor: Colors.pink,
+                foregroundColor: Colors.white,
             ),
             body: Center(
                 child: Text('Inside' + widget.text),
