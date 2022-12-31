@@ -18,6 +18,17 @@ class _MusifyState extends State<MusifyPage> {
                 ),
                 backgroundColor: Colors.black,
                 foregroundColor: Colors.white,
+                actions: <Widget>[
+                    IconButton(
+                        onPressed: (() => Navigator.push(context, 
+                                MaterialPageRoute(builder: (_) => HomeTab(
+                                        text: 'Settings',
+                                ))
+                            )
+                        ),
+                        icon: Icon(Icons.settings),
+                    )   
+                ],
             ),
             body: Center(
                 child: TextButton(
