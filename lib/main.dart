@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'pages/pages.dart';
+import 'pages/pageTitle.dart';
+import 'bottomNavigation/bottomNavigation.dart';
 
 void main() {
     runApp( const Musify() );
@@ -13,19 +16,23 @@ class Musify extends StatefulWidget {
 }
 
 class _MusifyState extends State<Musify> {
-    int selectedPageIndex = 0;
-    int _selectedTabIndex = 0;
-
-    void _onNavItemTapped(int tabIndex) {
+    int currentPageIndex = 0;
+    int currentNavIndex = 0;
+    String pageTitle = 'Musify - Home';
+    // Use for any page change
+    void setCurrentPage(pageIndex) {
         setState(() {
-            _selectedTabIndex = tabIndex;
-            selectedPageIndex = _selectedTabIndex;
+            currentPageIndex = pageIndex;
+            pageTitle = PageTitle.getPageTitle(currentPageIndex); 
         });
     }
 
-    void _onSettingsTapped(int pageIndex) {
+    // Only use for bottom navigation page change
+    void setCurrentNav(navIndex) {
         setState(() {
-            selectedPageIndex = pageIndex;
+            currentNavIndex = navIndex;
+            currentPageIndex = currentNavIndex;
+            pageTitle = PageTitle.getPageTitle(currentPageIndex);
         });
     }
 
@@ -34,35 +41,13 @@ class _MusifyState extends State<Musify> {
         return MaterialApp(
             home: Scaffold(
                 appBar: AppBar(
-                    backgroundColor: Colors.green,
+                    backgroundColor: Colors.black,
                     title: Center(
-                        child: const Text('Musify')
+                        child: Text(pageTitle),
                     ),
-                    actions: <Widget>[
-                        IconButton(
-                            icon: const Icon(Icons.settings),
-                            onPressed: () {
-                                _onSettingsTapped(2);
-                            },
-                        ),
-                    ],
                 ),
-                body: PageComponent.getPageComponent(selectedPageIndex),
-                bottomNavigationBar: BottomNavigationBar(
-                    items: const <BottomNavigationBarItem>[
-                        BottomNavigationBarItem(
-                            icon: Icon(Icons.home),
-                            label: 'Home',
-
-                        ),
-                        BottomNavigationBarItem(
-                            icon: Icon(Icons.my_library_music_outlined),
-                            label: 'Library',
-                        )
-                    ],
-                    currentIndex: _selectedTabIndex,
-                    onTap: _onNavItemTapped,
-                ),
+                body: PageComponent.getPageComponent(currentPageIndex),
+                bottomNavigationBar: BottomNavigatoin.getBottomNavigation(currentNavIndex, setCurrentNav),
             ),
         );
     }
