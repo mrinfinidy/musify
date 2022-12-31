@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-
-import 'pages/pages.dart';
-import 'appBar/appBar.dart';
-import 'bottomNavigation/bottomNavigation.dart';
-
+import 'package:musify/bottomNavigation/bottomNavigation.dart';
+import 'package:musify/pages/musifyPage.dart';
 
 void main() {
-    runApp( const Musify() );
+    runApp( Musify() );
 }
 
 class Musify extends StatefulWidget {
@@ -17,33 +14,40 @@ class Musify extends StatefulWidget {
 }
 
 class _MusifyState extends State<Musify> {
-    int currentPageIndex = 0;
-    int currentNavIndex = 0;
-    String pageTitle = 'Musify - Home';
+    final int _index = 0;
 
-    void setCurrentNavIndex(navIndex) {
-        setState(() {
-            currentNavIndex = navIndex;
-            currentPageIndex = currentNavIndex;
-        });
-    }
+    final List<Widget> _body = [
+        const MusifyPage(
+            text: 'Tab1',
+        ),
+        const MusifyPage(
+            text: 'Tab2',
+        ), 
+    ];
 
-    void setCurrentPageIndex(pageIndex) {
-        setState(() {
-            currentPageIndex = pageIndex;
-        });
-    }
-
+    final _homeNavigatorKey = GlobalKey<NavigatorState>();
+    final _libraryNavigatorKey = GlobalKey<NavigatorState>();
 
     @override
     Widget build(BuildContext context) {
         return MaterialApp(
-            home: Builder(
-                builder: (context) => Scaffold(
-                    appBar: AppBarComponent.getAppBarComponent(currentPageIndex, setCurrentPageIndex),
-                    body: PageComponent.getPageComponent(currentPageIndex),
-                    bottomNavigationBar: BottomNavigation.getBottomNavigation(currentNavIndex, setCurrentNavIndex),
+            home: Scaffold(
+                bottomNavigationBar: BottomNavigation(
+            items:[
+                BottomNavigationTab(
+                    tab: _body[0],
+                    icon: Icons.home,
+                    title: 'Home',
+                    navigatorKey: _homeNavigatorKey,
                 ),
+                BottomNavigationTab(
+                    tab: _body[1], 
+                    title: 'Library', 
+                    icon: Icons.my_library_music_outlined,
+                    navigatorKey: _libraryNavigatorKey,
+                )
+            ] 
+        ),
             ),
         );
     }
