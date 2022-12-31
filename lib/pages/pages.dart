@@ -8,7 +8,7 @@ class PageComponent {
         List<Widget> widgetOptions = <Widget>[
             HomeWidget.getHomeWidget(),
             LibraryWidget.getLibraryWidget(),
-            Settings.getSettingsWidget(),
+            Settings.getSettings(),
         ];
 
         return widgetOptions.elementAt(selectedPageIndex);

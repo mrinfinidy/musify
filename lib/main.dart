@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'pages/pages.dart';
-import 'pages/pageTitle.dart';
+import 'appBar/appBar.dart';
 import 'bottomNavigation/bottomNavigation.dart';
+
 
 void main() {
     runApp( const Musify() );
@@ -19,44 +20,32 @@ class _MusifyState extends State<Musify> {
     int currentPageIndex = 0;
     int currentNavIndex = 0;
     String pageTitle = 'Musify - Home';
-    // Use for any page change
-    void setCurrentPage(pageIndex) {
-        setState(() {
-            currentPageIndex = pageIndex;
-            pageTitle = PageTitle.getPageTitle(currentPageIndex); 
-        });
-    }
 
-    // Only use for bottom navigation page change
-    void setCurrentNav(navIndex) {
+    void setCurrentNavIndex(navIndex) {
         setState(() {
             currentNavIndex = navIndex;
             currentPageIndex = currentNavIndex;
-            pageTitle = PageTitle.getPageTitle(currentPageIndex);
         });
     }
+
+    void setCurrentPageIndex(pageIndex) {
+        setState(() {
+            currentPageIndex = pageIndex;
+        });
+    }
+
 
     @override
     Widget build(BuildContext context) {
         return MaterialApp(
-            home: Scaffold(
-                appBar: AppBar(
-                    backgroundColor: Colors.black,
-                    title: Center(
-                        child: Text(pageTitle),
-                    ),
-                    actions: <Widget>[
-                        IconButton(
-                            icon: Icon(Icons.settings),
-                            onPressed: () {
-                                setCurrentPage(2);
-                            },
-                        ),
-                    ], 
+            home: Builder(
+                builder: (context) => Scaffold(
+                    appBar: AppBarComponent.getAppBarComponent(currentPageIndex, setCurrentPageIndex),
+                    body: PageComponent.getPageComponent(currentPageIndex),
+                    bottomNavigationBar: BottomNavigation.getBottomNavigation(currentNavIndex, setCurrentNavIndex),
                 ),
-                body: PageComponent.getPageComponent(currentPageIndex),
-                bottomNavigationBar: BottomNavigatoin.getBottomNavigation(currentNavIndex, setCurrentNav),
             ),
         );
     }
 }
+

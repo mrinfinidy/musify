@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class BottomNavigatoin {
-    static Widget getBottomNavigation(int currentNavIndex,Function(void) setCurrentNav) {
+class BottomNavigation {
+    static BottomNavigationBar getBottomNavigation(int currentNavIndex,Function(void) setCurrentNavIndex) {
         return BottomNavigationBar(
             items: const <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
@@ -14,7 +14,7 @@ class BottomNavigatoin {
                 ),
             ],
             currentIndex: currentNavIndex,
-            onTap: setCurrentNav,
+            onTap: setCurrentNavIndex,
         );
     }
 }
