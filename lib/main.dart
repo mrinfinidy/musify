@@ -31,23 +31,23 @@ class _MusifyState extends State<Musify> {
     @override
     Widget build(BuildContext context) {
         return MaterialApp(
-            home: Scaffold(
+            home: Scaffold( 
                 bottomNavigationBar: BottomNavigation(
-            items:[
-                BottomNavigationTab(
-                    tab: _body[0],
-                    icon: Icons.home,
-                    title: 'Home',
-                    navigatorKey: _homeNavigatorKey,
+                    items:[
+                        BottomNavigationTab(
+                            tab: _body[0],
+                            icon: Icons.home,
+                            title: 'Home',
+                            navigatorKey: _homeNavigatorKey,
+                        ),
+                        BottomNavigationTab(
+                            tab: _body[1], 
+                            title: 'Library', 
+                            icon: Icons.my_library_music_outlined,
+                            navigatorKey: _libraryNavigatorKey,
+                        )
+                    ] 
                 ),
-                BottomNavigationTab(
-                    tab: _body[1], 
-                    title: 'Library', 
-                    icon: Icons.my_library_music_outlined,
-                    navigatorKey: _libraryNavigatorKey,
-                )
-            ] 
-        ),
             ),
         );
     }

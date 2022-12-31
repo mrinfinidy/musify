@@ -12,6 +12,13 @@ class _MusifyState extends State<MusifyPage> {
     @override
     Widget build(BuildContext context) {
         return Scaffold(
+            appBar: AppBar(
+                title: Center(
+                    child: const Text('Musify'),
+                ),
+                backgroundColor: Colors.black,
+                foregroundColor: Colors.pink,
+            ),
             body: Center(
                 child: TextButton(
                     onPressed: (() => Navigator.push(context, 
