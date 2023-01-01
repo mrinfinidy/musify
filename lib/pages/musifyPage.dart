@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musify/settings/settingsPage.dart';
 
 class MusifyPage extends StatefulWidget {
     final String text;
@@ -21,9 +22,7 @@ class _MusifyState extends State<MusifyPage> {
                 actions: <Widget>[
                     IconButton(
                         onPressed: (() => Navigator.push(context, 
-                                MaterialPageRoute(builder: (_) => HomeTab(
-                                        text: 'Settings',
-                                ))
+                                MaterialPageRoute(builder: (_) => SettingsPage(text: widget.text))
                             )
                         ),
                         icon: Icon(Icons.settings),

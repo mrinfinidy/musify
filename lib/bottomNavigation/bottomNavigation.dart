@@ -45,6 +45,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                         } else {
                             setState(() {
                                 _selectedTab = tabIndex;
+                                widget.items[tabIndex].navigatorKey?.currentState?.popUntil((route) => route.isFirst);
                             });
                         }
                     },
