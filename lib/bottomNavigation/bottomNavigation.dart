@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Persistent bottom navigation bar that is always visible
 class BottomNavigation extends StatefulWidget {
     final List<BottomNavigationTab> items;
 
@@ -40,14 +41,13 @@ class _BottomNavigationState extends State<BottomNavigation> {
                     backgroundColor: Colors.black,
                     currentIndex: _selectedTab,
                     onTap: (tabIndex) {
-                        if (tabIndex == _selectedTab) {
-                            widget.items[tabIndex].navigatorKey?.currentState?.popUntil((route) => route.isFirst);
-                        } else {
+                        if (tabIndex != _selectedTab) {
                             setState(() {
                                 _selectedTab = tabIndex;
-                                widget.items[tabIndex].navigatorKey?.currentState?.popUntil((route) => route.isFirst);
                             });
                         }
+                        // Always return to root when bottom nav is tapped
+                        widget.items[tabIndex].navigatorKey?.currentState?.popUntil((route) => route.isFirst);
                     },
                     selectedItemColor: Colors.pink,
                     unselectedItemColor: Colors.white,

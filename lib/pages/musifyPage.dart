@@ -9,6 +9,7 @@ class MusifyPage extends StatefulWidget {
     State<MusifyPage> createState() => _MusifyState();
 }
 
+// Use Navigator for not bottom nav navigations 
 class _MusifyState extends State<MusifyPage> {
     @override
     Widget build(BuildContext context) {
