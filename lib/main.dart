@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musify/bottomNavigation/bottomNavigation.dart';
 import 'package:musify/pages/musifyPage.dart';
+import 'package:musify/pages/homePage.dart';
 
 void main() {
     runApp( Musify() );
@@ -17,9 +18,7 @@ class _MusifyState extends State<Musify> {
     final int _index = 0;
 
     final List<Widget> _body = [
-        const MusifyPage(
-            text: 'Tab1',
-        ),
+        HomePage(),
         const MusifyPage(
             text: 'Tab2',
         ), 
