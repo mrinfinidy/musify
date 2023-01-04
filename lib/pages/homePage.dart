@@ -10,9 +10,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State <HomePage> {
     bool isPlaying = false;
     final audioPlayer = AudioPlayer();
+    bool earableConnected = false;
 
     setAudioSource() async {
         await audioPlayer.setUrl('https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_500KB_MP3.mp3');
+    }
+
+    connectEarable() async {
+        print('connect earable');
+        setState(() {
+            earableConnected = !earableConnected;
+        });
     }
 
     @override
@@ -44,11 +52,18 @@ class _HomePageState extends State <HomePage> {
                     Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                            Text('Connection status'),
-                            IconButton(
-                                icon: Icon(Icons.bluetooth_outlined),
-                                onPressed: () {},
-                                splashColor: Colors.pink,
+                            Column(
+                                children: <Widget>[
+                                    Text(earableConnected ? 'connected' : 'disconnected'),
+                                    IconButton(
+                                        icon: Icon(Icons.bluetooth_outlined),
+                                        color: earableConnected ? Colors.pink : Colors.black,
+                                        onPressed: () {
+                                            connectEarable();
+                                        },
+                                        splashColor: Colors.pink,
+                                    ), 
+                                ],
                             ),
                             CircleAvatar(
                                 radius: 35,
@@ -78,7 +93,6 @@ class _HomePageState extends State <HomePage> {
                                     },
                                 ),
                             ),                      
-                            
                         ],
                 ),
             ),
