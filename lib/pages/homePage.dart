@@ -1,3 +1,4 @@
+import 'package:esense_flutter/esense.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musify/settings/settingsPage.dart';
@@ -10,18 +11,34 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State <HomePage> {
     bool isPlaying = false;
     final audioPlayer = AudioPlayer();
-    bool earableConnected = false;
+    bool earableConnected = false; // use for testing beacuse no earable hw
+    ESenseManager eSenseManager = ESenseManager('eSense-0539');
     
+    Future<void> _connectToEsense() async {     
+        await eSenseManager.disconnect();
+        // await eSenseManager.connect();
+        // use for testing
+        setState(() {
+            earableConnected = !earableConnected; 
+        });
+    }
 
     setAudioSource() async {
         await audioPlayer.setUrl('https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_500KB_MP3.mp3');
     }
-
+    
+    /*
     connectEarable() async {
-        print('connect earable');
         setState(() {
             earableConnected = !earableConnected;
         });
+    }
+    */
+
+    @override
+    void initState() {
+        _connectToEsense();
+        super.initState();
     }
 
     @override
@@ -55,12 +72,39 @@ class _HomePageState extends State <HomePage> {
                         children: <Widget>[
                             Column(
                                 children: <Widget>[
-                                    Text(earableConnected ? 'connected' : 'disconnected'),
+                                    StreamBuilder<ConnectionEvent>(
+                                        stream: eSenseManager.connectionEvents,
+                                        builder: ((context, snapshot) {
+                                            if (snapshot.hasData) {
+                                                switch (snapshot.data!.type) {
+                                                    case ConnectionType.connected:
+                                                        return const Text('connected');
+                                                        break;
+                                                    case ConnectionType.device_found:
+                                                        return const Text('device found');
+                                                        break;
+                                                    case ConnectionType.device_not_found:
+                                                        return const Text('device not found');
+                                                        break;
+                                                    case ConnectionType.disconnected:
+                                                        return const Text('disconnected');
+                                                        break;
+                                                    default:
+                                                        return const Text('unknown');
+                                                }
+                                            } else {
+                                                // return const Text('no data');
+                                                // use for testing
+                                                return earableConnected ? Text('connected') : Text('disconnected');
+                                            }
+                                        })
+                                    ),
+                                    // Text(earableConnected ? 'connected' : 'disconnected'),
                                     IconButton(
                                         icon: Icon(Icons.bluetooth_outlined),
                                         color: earableConnected ? Colors.pink : Colors.black,
                                         onPressed: () {
-                                            connectEarable();
+                                            _connectToEsense();
                                         },
                                         splashColor: Colors.pink,
                                     ), 
