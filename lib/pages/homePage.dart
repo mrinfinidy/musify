@@ -39,35 +39,11 @@ class _HomePageState extends State <HomePage> {
                     ),
                 ],
             ),
-            body: Center(
-                child: CircleAvatar(
-                    radius: 35,
-                    backgroundColor: Colors.black,
-                    child: IconButton(
-                        icon: Icon(
-                            isPlaying ? Icons.pause_circle : Icons.play_circle, 
-                        ),
-                        iconSize: 50,
-                        color: Colors.pink,
-                        splashColor: Colors.pink,
-                        onPressed: () async {
-                            if (isPlaying) {
-                                audioPlayer.pause();
-                                setState(() {
-                                    isPlaying = false;
-                                });
-                            } else {
-                                if (audioPlayer.audioSource == null) {
-                                    setAudioSource();
-                                } 
-                                audioPlayer.play();
-                                setState(() {
-                                    isPlaying = true;
-                                });
-                            }
-                        },
-                    ),
-                ),
+            body: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                    
+                ],
             ),
         );
     }
