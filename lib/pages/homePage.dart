@@ -1,7 +1,9 @@
+
 import 'package:esense_flutter/esense.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musify/settings/settingsPage.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomePage extends StatefulWidget {
     @override
@@ -12,11 +14,22 @@ class _HomePageState extends State <HomePage> {
     bool isPlaying = false;
     final audioPlayer = AudioPlayer();
     bool earableConnected = false; // use for testing beacuse no earable hw
+    Color statusColor = Colors.black;
 
     static const String eSenseDeviceName = 'eSense-0332';
     ESenseManager eSenseManager = ESenseManager(eSenseDeviceName);
+
+    Future<void> _askForPermissions() async {
+        if (!(await Permission.bluetooth.request().isGranted)) {
+            print('WARNING - No Bluetooth permission');
+        }
+        if (!(await Permission.locationWhenInUse.request().isGranted)) {
+            print('WARNING - No location permission');
+        }
+    }
     
     Future<void> _connectToEsense() async {     
+        await _askForPermissions();
         await eSenseManager.disconnect();
         await eSenseManager.connect();
         // use for testing
@@ -97,7 +110,7 @@ class _HomePageState extends State <HomePage> {
                                                     default:
                                                         return const Text('unknown');
                                                 }
-                                            } else {
+                                            } else { 
                                                 return const Text('no data');
                                                 // use for testing
                                                 // return earableConnected ? Text('connected') : Text('disconnected');
@@ -107,6 +120,7 @@ class _HomePageState extends State <HomePage> {
                                     // Text(earableConnected ? 'connected' : 'disconnected'),
                                     IconButton(
                                         icon: Icon(Icons.bluetooth_outlined),
+                                        // color: statusColor,
                                         color: earableConnected ? Colors.pink : Colors.black,
                                         onPressed: () {
                                             _connectToEsense();
