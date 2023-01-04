@@ -11,6 +11,7 @@ class _HomePageState extends State <HomePage> {
     bool isPlaying = false;
     final audioPlayer = AudioPlayer();
     bool earableConnected = false;
+    
 
     setAudioSource() async {
         await audioPlayer.setUrl('https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_500KB_MP3.mp3');
