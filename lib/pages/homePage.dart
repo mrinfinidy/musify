@@ -20,9 +20,11 @@ class _HomePageState extends State <HomePage> {
         await eSenseManager.disconnect();
         await eSenseManager.connect();
         // use for testing
+        /*
         setState(() {
             earableConnected = !earableConnected; 
         });
+        */
     }
 
     setAudioSource() async {
@@ -96,9 +98,9 @@ class _HomePageState extends State <HomePage> {
                                                         return const Text('unknown');
                                                 }
                                             } else {
-                                                // return const Text('no data');
+                                                return const Text('no data');
                                                 // use for testing
-                                                return earableConnected ? Text('connected') : Text('disconnected');
+                                                // return earableConnected ? Text('connected') : Text('disconnected');
                                             }
                                         })
                                     ),
