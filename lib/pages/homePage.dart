@@ -12,11 +12,13 @@ class _HomePageState extends State <HomePage> {
     bool isPlaying = false;
     final audioPlayer = AudioPlayer();
     bool earableConnected = false; // use for testing beacuse no earable hw
-    ESenseManager eSenseManager = ESenseManager('eSense-0539');
+
+    static const String eSenseDeviceName = 'eSense-0332';
+    ESenseManager eSenseManager = ESenseManager(eSenseDeviceName);
     
     Future<void> _connectToEsense() async {     
         await eSenseManager.disconnect();
-        // await eSenseManager.connect();
+        await eSenseManager.connect();
         // use for testing
         setState(() {
             earableConnected = !earableConnected; 
@@ -44,6 +46,7 @@ class _HomePageState extends State <HomePage> {
     @override
     void dispose() {
         audioPlayer.dispose();
+        eSenseManager.disconnect();
         super.dispose();
     }
 
