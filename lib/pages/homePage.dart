@@ -39,11 +39,48 @@ class _HomePageState extends State <HomePage> {
                     ),
                 ],
             ),
-            body: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                    
-                ],
+            body: Center( 
+                child:
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                            Text('Connection status'),
+                            IconButton(
+                                icon: Icon(Icons.bluetooth_outlined),
+                                onPressed: () {},
+                                splashColor: Colors.pink,
+                            ),
+                            CircleAvatar(
+                                radius: 35,
+                                backgroundColor: Colors.black,
+                                child: IconButton(
+                                    icon: Icon(
+                                        isPlaying ? Icons.pause_circle : Icons.play_circle, 
+                                    ),
+                                    iconSize: 50,
+                                    color: Colors.pink,
+                                    splashColor: Colors.pink,
+                                    onPressed: () async {
+                                        if (isPlaying) {
+                                            audioPlayer.pause();
+                                            setState(() {
+                                                isPlaying = false;
+                                            });
+                                        } else {
+                                            if (audioPlayer.audioSource == null) {
+                                                setAudioSource();
+                                            } 
+                                            audioPlayer.play();
+                                            setState(() {
+                                                isPlaying = true;
+                                            });
+                                        }
+                                    },
+                                ),
+                            ),                      
+                            
+                        ],
+                ),
             ),
         );
     }
