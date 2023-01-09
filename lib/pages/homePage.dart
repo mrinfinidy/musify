@@ -16,7 +16,7 @@ class _HomePageState extends State <HomePage> {
     bool earableConnected = false; // use for testing beacuse no earable hw
     Color statusColor = Colors.black;
 
-    static const String eSenseDeviceName = 'eSense-0332';
+    static const String eSenseDeviceName = 'eSense-0678';
     ESenseManager eSenseManager = ESenseManager(eSenseDeviceName);
 
     Future<void> _askForPermissions() async {
