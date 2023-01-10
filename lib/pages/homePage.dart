@@ -55,12 +55,6 @@ class _HomePageState extends State <HomePage> {
     */
 
     @override
-    void initState() {
-        _connectToEsense();
-        super.initState();
-    }
-
-    @override
     void dispose() {
         audioPlayer.dispose();
         eSenseManager.disconnect();
