@@ -27,7 +27,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     // compileSdkVersion flutter.compileSdkVersion
-    compileSdkVersion 31 // Required by some dependencies
+    compileSdkVersion 33 // Required by permission handler
 
     ndkVersion flutter.ndkVersion
 
