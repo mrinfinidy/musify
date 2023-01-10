@@ -1,4 +1,7 @@
 
+import 'dart:async';
+import 'dart:io';
+
 import 'package:esense_flutter/esense.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
@@ -13,8 +16,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State <HomePage> {
     bool isPlaying = false;
     final audioPlayer = AudioPlayer();
-    bool esenseConnected = false; // use for testing beacuse no earable hw
     Color statusColor = Colors.black;
+    // ESense
+    String _deviceStatus = 'unknown';
+    double _voltage = -1;
+    String _event = '';
+    bool sampling = false;
+    bool eSenseConnected = false; // use for testing beacuse no earable hw
 
     static const String eSenseDeviceName = 'eSense-0678';
     ESenseManager eSenseManager = ESenseManager(eSenseDeviceName);
@@ -27,11 +35,101 @@ class _HomePageState extends State <HomePage> {
             print('WARNING - No location permission');
         }
     }
+
+    Future<void> _listenToESense() async {
+        if (Platform.isAndroid) await _askForPermissions();
+
+        eSenseManager.connectionEvents.listen((event) {
+            print('connect CONNECTION event: $event');
+            if (event.type == ConnectionType.connected) _listenToESense();
+
+            setState(() {
+                eSenseConnected = false;
+                switch (event.type) {
+                    case ConnectionType.connected:
+                        _deviceStatus = 'connected';
+                        eSenseConnected = true;
+                        break;
+                    case ConnectionType.unknown:
+                        _deviceStatus = 'unknown';
+                        break;
+                    case ConnectionType.disconnected:
+                        _deviceStatus = 'disconnected';
+                        break;
+                    case ConnectionType.device_found:
+                        _deviceStatus = 'device_found';
+                        break;
+                    case ConnectionType.device_not_found:
+                        _deviceStatus = 'device_not_found';
+                        break;
+                }
+            });
+        });
+    }
     
     Future<void> _connectToEsense() async {     
-        // await _askForPermissions();
-        await eSenseManager.disconnect();
-        await eSenseManager.connect(); 
+        if (!eSenseConnected) {
+            print('connecting');
+            eSenseConnected = await eSenseManager.connect();
+            setState(() {
+                _deviceStatus = eSenseConnected ? 'connecting...' : 'connction failed';
+            });
+        }
+    }
+
+    void _listenToESenseEvents() async {
+        eSenseManager.eSenseEvents.listen((event) {
+            print('listen ESENSE event: $event');
+            setState(() {
+                switch (event.runtimeType) {
+                    case BatteryRead:
+                        _voltage = (event as BatteryRead).voltage ?? -1;
+                        break;
+                    case AccelerometerOffsetRead:
+                        print('read accelerometer');
+                        break;
+                }
+            });
+        });
+
+        _getEsenseProperties();
+    }
+
+    void _getEsenseProperties() async {
+        // Get battery level every 10 sec
+        Timer.periodic(
+            const Duration(seconds: 10), 
+            (timer) async => (eSenseConnected) ? await eSenseManager.getBatteryVoltage() : null,
+        );
+
+        // Wait 2 sec before getting offset -> BLE interface compatability
+        Timer(
+            const Duration(seconds: 2),
+            () async => await eSenseManager.getAccelerometerOffset()
+        );
+    }
+
+    StreamSubscription? subscription;
+    void _startListenToSensorEvents() async {
+        print('setting sampling frequency');
+        await eSenseManager.setSamplingRate(10);
+
+        subscription = eSenseManager.sensorEvents.listen((event) {
+            print('subscribe SENSOR event: $event');
+            setState(() {
+                _event = event.toString();
+            });
+        });
+        setState(() {
+            sampling = true;
+        }); 
+    }
+
+    void _pauseListenToSensorEvents() async {
+        subscription?.cancel();
+        setState(() {
+            sampling = false;
+        });
     }
 
     Future<void> _disconnectFromEsense() async {
@@ -45,8 +143,25 @@ class _HomePageState extends State <HomePage> {
     @override
     void dispose() {
         audioPlayer.dispose();
+        _pauseListenToSensorEvents();
         eSenseManager.disconnect();
         super.dispose();
+    }
+
+    void testPress() {
+        print('test listen');
+        if (!eSenseManager.connected) {
+            print('eSense not connected');
+            return;
+        } else {
+            if (!sampling) {
+                _startListenToSensorEvents();
+                return;
+            } else {
+                _pauseListenToSensorEvents();
+                return;
+            }
+        }
     }
 
     @override
@@ -74,42 +189,20 @@ class _HomePageState extends State <HomePage> {
                         children: <Widget>[
                             Column(
                                 children: <Widget>[
-                                    StreamBuilder<ConnectionEvent>(
-                                        stream: eSenseManager.connectionEvents,
-                                        builder: ((context, snapshot) {
-                                            if (snapshot.hasData) {
-                                                switch (snapshot.data!.type) {
-                                                    case ConnectionType.connected:
-                                                        return const Text('connected');
-                                                        break;
-                                                    case ConnectionType.device_found:
-                                                        return const Text('device found');
-                                                        break;
-                                                    case ConnectionType.device_not_found:
-                                                        return const Text('device not found');
-                                                        break;
-                                                    case ConnectionType.disconnected:
-                                                        return const Text('disconnected');
-                                                        break;
-                                                    default:
-                                                        return const Text('unknown');
-                                                }
-                                            } else { 
-                                                return const Text('no data');
-                                            }
-                                        })
-                                    ),
+                                    Text('eSense Device Status: $_deviceStatus'),
+                                    Text('eSense Battery Level: $_voltage'),
+                                    Text(_event),
                                     IconButton(
                                         icon: Icon(Icons.bluetooth_outlined),
                                         // color: statusColor,
-                                        color: esenseConnected ? Colors.pink : Colors.black,
+                                        color: eSenseConnected ? Colors.pink : Colors.black,
                                         onPressed: () {
-                                            esenseConnected ? _disconnectFromEsense() : _connectToEsense();
+                                            eSenseConnected ? _disconnectFromEsense() : _connectToEsense();
                                         },
                                         splashColor: Colors.pink,
                                     ), 
                                 ],
-                            ),
+                            ), 
                             CircleAvatar(
                                 radius: 35,
                                 backgroundColor: Colors.black,
@@ -140,6 +233,20 @@ class _HomePageState extends State <HomePage> {
                             ),                      
                         ],
                 ),
+            ),
+            floatingActionButton: FloatingActionButton(
+                /*
+                onPressed: (!eSenseManager.connected)
+                    ? null
+                    : (!sampling)
+                        ? _startListenToSensorEvents
+                        : _pauseListenToSensorEvents,
+                */
+                onPressed: testPress,
+                tooltip: 'Listen to eSense sensors',
+                child: (!sampling)
+                    ? const Icon(Icons.play_arrow)
+                    : const Icon(Icons.pause),
             ),
         );
     }
