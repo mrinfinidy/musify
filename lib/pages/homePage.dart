@@ -145,7 +145,7 @@ class _HomePageState extends State <HomePage> {
                 // _event = event.toString();
                 _accel = event.accel.toString();
                 _gyro = event.gyro.toString();
-                if (event.gyro![1] > 1000 || event.gyro![1] < -1000) {
+                if (event.gyro![1] > 2500 || event.gyro![1] < -2500) {
                     _decreaseVolume5Sec();
                 }
             });
