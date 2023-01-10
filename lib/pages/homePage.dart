@@ -15,8 +15,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State <HomePage> {
     bool isPlaying = false;
-    final audioPlayer = AudioPlayer();
     Color statusColor = Colors.black;
+    final audioPlayer = AudioPlayer();
     // ESense
     String _deviceStatus = 'unknown';
     int _offsetX = 0;
@@ -36,6 +36,7 @@ class _HomePageState extends State <HomePage> {
     void initState() {
         super.initState();
         _listenToESense();
+        audioPlayer.setLoopMode(LoopMode.all);
     }
 
     Future<void> _askForPermissions() async {
