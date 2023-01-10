@@ -13,13 +13,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State <HomePage> {
     bool isPlaying = false;
     final audioPlayer = AudioPlayer();
-    bool earableConnected = false; // use for testing beacuse no earable hw
+    bool esenseConnected = false; // use for testing beacuse no earable hw
     Color statusColor = Colors.black;
 
     static const String eSenseDeviceName = 'eSense-0678';
     ESenseManager eSenseManager = ESenseManager(eSenseDeviceName);
 
-    /*
     Future<void> _askForPermissions() async {
         if (!(await Permission.bluetooth.request().isGranted)) {
             print('WARNING - No Bluetooth permission');
@@ -28,18 +27,11 @@ class _HomePageState extends State <HomePage> {
             print('WARNING - No location permission');
         }
     }
-    */
     
     Future<void> _connectToEsense() async {     
         // await _askForPermissions();
         await eSenseManager.disconnect();
-        await eSenseManager.connect();
-        // use for testing
-        /*
-        setState(() {
-            earableConnected = !earableConnected; 
-        });
-        */
+        await eSenseManager.connect(); 
     }
 
     Future<void> _disconnectFromEsense() async {
@@ -104,19 +96,15 @@ class _HomePageState extends State <HomePage> {
                                                 }
                                             } else { 
                                                 return const Text('no data');
-                                                // use for testing
-                                                // return earableConnected ? Text('connected') : Text('disconnected');
                                             }
                                         })
                                     ),
-                                    // Text(earableConnected ? 'connected' : 'disconnected'),
                                     IconButton(
                                         icon: Icon(Icons.bluetooth_outlined),
                                         // color: statusColor,
-                                        color: earableConnected ? Colors.pink : Colors.black,
+                                        color: esenseConnected ? Colors.pink : Colors.black,
                                         onPressed: () {
-
-                                            _connectToEsense();
+                                            esenseConnected ? _disconnectFromEsense() : _connectToEsense();
                                         },
                                         splashColor: Colors.pink,
                                     ), 
