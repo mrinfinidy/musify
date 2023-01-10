@@ -171,7 +171,8 @@ class _HomePageState extends State <HomePage> {
         super.dispose();
     }
 
-    void testPress() {
+    /*
+    void sensorControl() {
         print('test listen');
         if (!eSenseManager.connected) {
             print('eSense not connected');
@@ -186,6 +187,7 @@ class _HomePageState extends State <HomePage> {
             }
         }
     }
+    */
 
     @override
     Widget build(BuildContext context) {
@@ -224,6 +226,18 @@ class _HomePageState extends State <HomePage> {
                                         },
                                         splashColor: Colors.pink,
                                     ), 
+                                    FloatingActionButton.extended(
+                                        onPressed: (!eSenseManager.connected)
+                                            ? null
+                                            : (!sampling)
+                                                ? _startListenToSensorEvents
+                                                : _pauseListenToSensorEvents,
+                                        // onPressed: sensorControl,
+                                        tooltip: 'Listen to eSense sensors',
+                                        icon: (!sampling) ? const Icon(Icons.play_arrow) : const Icon(Icons.pause),
+                                        label: (!sampling) ? const Text('Start Sensors') : const Text('Stop Sensors'),
+                                        backgroundColor: (!sampling) ? Colors.black : Colors.pink,
+                                    ),
                                 ],
                             ), 
                             CircleAvatar(
@@ -256,20 +270,6 @@ class _HomePageState extends State <HomePage> {
                             ),                      
                         ],
                 ),
-            ),
-            floatingActionButton: FloatingActionButton(
-                /*
-                onPressed: (!eSenseManager.connected)
-                    ? null
-                    : (!sampling)
-                        ? _startListenToSensorEvents
-                        : _pauseListenToSensorEvents,
-                */
-                onPressed: testPress,
-                tooltip: 'Listen to eSense sensors',
-                child: (!sampling)
-                    ? const Icon(Icons.play_arrow)
-                    : const Icon(Icons.pause),
             ),
         );
     }
