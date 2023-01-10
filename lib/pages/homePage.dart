@@ -23,12 +23,18 @@ class _HomePageState extends State <HomePage> {
     int _offsetY = 0;
     int _offsetZ = 0;
     double _voltage = -1;
-    String _event = '';
+    String _event = 'eSense sensor values';
     bool sampling = false;
     bool eSenseConnected = false; // use for testing beacuse no earable hw
 
     static const String eSenseDeviceName = 'eSense-0678';
     ESenseManager eSenseManager = ESenseManager(eSenseDeviceName);
+
+    @override
+    void initState() {
+        super.initState();
+        _listenToESense();
+    }
 
     Future<void> _askForPermissions() async {
         if (!(await Permission.bluetooth.request().isGranted)) {
@@ -44,7 +50,7 @@ class _HomePageState extends State <HomePage> {
 
         eSenseManager.connectionEvents.listen((event) {
             print('connect CONNECTION event: $event');
-            if (event.type == ConnectionType.connected) _listenToESense();
+            if (event.type == ConnectionType.connected) _listenToESenseEvents();
 
             setState(() {
                 eSenseConnected = false;
