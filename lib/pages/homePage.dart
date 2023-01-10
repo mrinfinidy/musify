@@ -42,18 +42,14 @@ class _HomePageState extends State <HomePage> {
         */
     }
 
+    Future<void> _disconnectFromEsense() async {
+        await eSenseManager.disconnect();
+    }
+
     setAudioSource() async {
         await audioPlayer.setUrl('https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_500KB_MP3.mp3');
     }
     
-    /*
-    connectEarable() async {
-        setState(() {
-            earableConnected = !earableConnected;
-        });
-    }
-    */
-
     @override
     void dispose() {
         audioPlayer.dispose();
@@ -119,6 +115,7 @@ class _HomePageState extends State <HomePage> {
                                         // color: statusColor,
                                         color: earableConnected ? Colors.pink : Colors.black,
                                         onPressed: () {
+
                                             _connectToEsense();
                                         },
                                         splashColor: Colors.pink,
