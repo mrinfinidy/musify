@@ -27,7 +27,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     // compileSdkVersion flutter.compileSdkVersion
-    compileSdkVersion 28 // needed for esense
+    compileSdkVersion 31 // Required by some dependencies
 
     ndkVersion flutter.ndkVersion
 
