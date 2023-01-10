@@ -24,6 +24,8 @@ class _HomePageState extends State <HomePage> {
     int _offsetZ = 0;
     double _voltage = -1;
     String _event = 'eSense sensor values';
+    String _accel = 'unknown';
+    String _gyro = 'unknown';
     bool sampling = false;
     bool eSenseConnected = false; // use for testing beacuse no earable hw
 
@@ -98,7 +100,6 @@ class _HomePageState extends State <HomePage> {
                         _offsetX = (event as AccelerometerOffsetRead).offsetX ?? 0;
                         _offsetY = (event as AccelerometerOffsetRead).offsetY ?? 0;
                         _offsetZ = (event as AccelerometerOffsetRead).offsetZ ?? 0;
-                        _decreaseVolume5Sec();
                         break;
                 }
             });
@@ -110,7 +111,7 @@ class _HomePageState extends State <HomePage> {
     //
     void _decreaseVolume5Sec() {
         if (_offsetZ >= 1 || _offsetZ <= 1) {
-            audioPlayer.setVolume(0.5);
+            audioPlayer.setVolume(0.2);
             Timer(
                 const Duration(seconds: 5),
                 () => audioPlayer.setVolume(1),
@@ -140,7 +141,12 @@ class _HomePageState extends State <HomePage> {
         subscription = eSenseManager.sensorEvents.listen((event) {
             print('subscribe SENSOR event: $event');
             setState(() {
-                _event = event.toString();
+                // _event = event.toString();
+                _accel = event.accel.toString();
+                _gyro = event.gyro.toString();
+                if (event.gyro![1] > 1000 || event.gyro![1] < -1000) {
+                    _decreaseVolume5Sec();
+                }
             });
         });
         setState(() {
@@ -198,9 +204,11 @@ class _HomePageState extends State <HomePage> {
                                 children: <Widget>[
                                     Text('eSense Device Status: $_deviceStatus'),
                                     Text('eSense Battery Level: $_voltage'),
-                                    Text(_event),
+                                    // Text(_event),
+                                    Text('Accelerometer: $_accel'),
+                                    Text('Gyroscope: $_gyro'),
                                     IconButton(
-                                        icon: Icon(Icons.bluetooth_outlined),
+                                        icon: const Icon(Icons.bluetooth_outlined),
                                         // color: statusColor,
                                         color: eSenseConnected ? Colors.pink : Colors.black,
                                         onPressed: () {
