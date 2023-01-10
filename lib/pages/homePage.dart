@@ -19,6 +19,7 @@ class _HomePageState extends State <HomePage> {
     static const String eSenseDeviceName = 'eSense-0678';
     ESenseManager eSenseManager = ESenseManager(eSenseDeviceName);
 
+    /*
     Future<void> _askForPermissions() async {
         if (!(await Permission.bluetooth.request().isGranted)) {
             print('WARNING - No Bluetooth permission');
@@ -27,9 +28,10 @@ class _HomePageState extends State <HomePage> {
             print('WARNING - No location permission');
         }
     }
+    */
     
     Future<void> _connectToEsense() async {     
-        await _askForPermissions();
+        // await _askForPermissions();
         await eSenseManager.disconnect();
         await eSenseManager.connect();
         // use for testing
