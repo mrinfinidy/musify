@@ -171,24 +171,6 @@ class _HomePageState extends State <HomePage> {
         super.dispose();
     }
 
-    /*
-    void sensorControl() {
-        print('test listen');
-        if (!eSenseManager.connected) {
-            print('eSense not connected');
-            return;
-        } else {
-            if (!sampling) {
-                _startListenToSensorEvents();
-                return;
-            } else {
-                _pauseListenToSensorEvents();
-                return;
-            }
-        }
-    }
-    */
-
     @override
     Widget build(BuildContext context) {
         return Scaffold(
