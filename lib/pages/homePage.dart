@@ -19,6 +19,9 @@ class _HomePageState extends State <HomePage> {
     Color statusColor = Colors.black;
     // ESense
     String _deviceStatus = 'unknown';
+    int _offsetX = 0;
+    int _offsetY = 0;
+    int _offsetZ = 0;
     double _voltage = -1;
     String _event = '';
     bool sampling = false;
@@ -86,13 +89,27 @@ class _HomePageState extends State <HomePage> {
                         _voltage = (event as BatteryRead).voltage ?? -1;
                         break;
                     case AccelerometerOffsetRead:
-                        print('read accelerometer');
+                        _offsetX = (event as AccelerometerOffsetRead).offsetX ?? 0;
+                        _offsetY = (event as AccelerometerOffsetRead).offsetY ?? 0;
+                        _offsetZ = (event as AccelerometerOffsetRead).offsetZ ?? 0;
+                        _decreaseVolume5Sec();
                         break;
                 }
             });
         });
 
         _getEsenseProperties();
+    }
+
+    //
+    void _decreaseVolume5Sec() {
+        if (_offsetZ >= 1 || _offsetZ <= 1) {
+            audioPlayer.setVolume(0.5);
+            Timer(
+                const Duration(seconds: 5),
+                () => audioPlayer.setVolume(1),
+            );
+        }
     }
 
     void _getEsenseProperties() async {
