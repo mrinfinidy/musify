@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:esense_flutter/esense.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musify/settings/settingsPage.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -14,6 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State <HomePage> {
+    FlutterBlue flutterBlue = FlutterBlue.instance;
     bool isPlaying = false;
     Color statusColor = Colors.black;
     final audioPlayer = AudioPlayer();
@@ -210,8 +212,32 @@ class _HomePageState extends State <HomePage> {
                                         icon: const Icon(Icons.bluetooth_outlined),
                                         // color: statusColor,
                                         color: eSenseConnected ? Colors.pink : Colors.black,
-                                        onPressed: () {
-                                            eSenseConnected ? _disconnectFromEsense() : _connectToEsense();
+                                        onPressed: () async {
+                                            if (await flutterBlue.isOn) {
+                                                eSenseConnected ? _disconnectFromEsense() : _connectToEsense();
+                                            } else {
+                                                showDialog(
+                                                    context: context,
+                                                    barrierDismissible: false,
+                                                    builder: (BuildContext context) {
+                                                        return AlertDialog(
+                                                            title: const Text('Enable Bluetooth'),
+                                                            content: const SingleChildScrollView(
+                                                                child: Text('Please enable Bluetooth to connect to eSense'),  
+                                                            ),
+                                                            actions: <Widget>[
+                                                                TextButton(
+                                                                    child: const Text('Ok'),
+                                                                    onPressed: () {
+                                                                        Navigator.of(context).pop();
+                                                                    },
+                                                                    style: TextButton.styleFrom(foregroundColor: Colors.black),
+                                                                ),
+                                                            ],
+                                                        );
+                                                    }
+                                                );
+                                            }
                                         },
                                         splashColor: Colors.pink,
                                     ), 
