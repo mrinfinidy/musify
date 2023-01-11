@@ -111,13 +111,11 @@ class _HomePageState extends State <HomePage> {
 
     //
     void _decreaseVolume5Sec() {
-        if (_offsetZ >= 1 || _offsetZ <= 1) {
-            audioPlayer.setVolume(0.2);
-            Timer(
-                const Duration(seconds: 5),
-                () => audioPlayer.setVolume(1),
-            );
-        }
+        audioPlayer.setVolume(0.2);
+        Timer(
+            const Duration(seconds: 5),
+            () => audioPlayer.setVolume(1),
+        );
     }
 
     void _getEsenseProperties() async {
@@ -145,7 +143,7 @@ class _HomePageState extends State <HomePage> {
                 // _event = event.toString();
                 _accel = event.accel.toString();
                 _gyro = event.gyro.toString();
-                if (event.gyro![1] > 2500 || event.gyro![1] < -2500) {
+                if (event.gyro![1] > 2200 || event.gyro![1] < -2200) {
                     _decreaseVolume5Sec();
                 }
             });
