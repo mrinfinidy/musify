@@ -145,7 +145,7 @@ class _HomePageState extends State <HomePage> {
                 // _event = event.toString();
                 _accel = event.accel.toString();
                 _gyro = event.gyro.toString();
-                if ((event.gyro![1] > 2500 || event.gyro![1] < -2500) && event.accel![1] < 3000 ) {
+                if ((event.gyro![0] > 1000 || event.gyro![0] < -1000) && event.accel![1] < 10000 ) {
                     _decreaseVolume5Sec();
                 }
             });
@@ -213,7 +213,7 @@ class _HomePageState extends State <HomePage> {
                                         // color: statusColor,
                                         color: eSenseConnected ? Colors.pink : Colors.black,
                                         onPressed: () async {
-                                            if (await flutterBlue.isOn) {
+                                            if (await flutterBlue.isOn && await Permission.locationWhenInUse.serviceStatus.isEnabled) {
                                                 eSenseConnected ? _disconnectFromEsense() : _connectToEsense();
                                             } else {
                                                 showDialog(
@@ -221,9 +221,9 @@ class _HomePageState extends State <HomePage> {
                                                     barrierDismissible: false,
                                                     builder: (BuildContext context) {
                                                         return AlertDialog(
-                                                            title: const Text('Enable Bluetooth'),
+                                                            title: const Text('Bluetooth and GPS'),
                                                             content: const SingleChildScrollView(
-                                                                child: Text('Please enable Bluetooth to connect to eSense'),  
+                                                                child: Text('Please enable Bluetooth and Location service (GPS) to connect to eSense'),  
                                                             ),
                                                             actions: <Widget>[
                                                                 TextButton(
