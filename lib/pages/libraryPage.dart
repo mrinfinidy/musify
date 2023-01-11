@@ -28,7 +28,27 @@ class _LibraryPageState extends State <LibraryPage> {
                     )
                 ],
             ),
-            body: Text('Library'),
+            body: Center(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: const <Widget>[
+                        Text(
+                            'Coming soon...',
+                            style: TextStyle(
+                                color: Colors.pink,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                            ), 
+                        ),
+                        Text(
+                            'Load mp3 files from this device',
+                            style: TextStyle(
+                                fontSize: 15,
+                            ),
+                        ),
+                    ], 
+                ),
+            ),
         ); 
     }
 }
