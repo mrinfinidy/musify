@@ -208,6 +208,7 @@ class _HomePageState extends State <HomePage> {
                                     // Text(_event),
                                     Text('Accelerometer: $_accel'),
                                     Text('Gyroscope: $_gyro'),
+                                    const SizedBox(height: 10),
                                     IconButton(
                                         icon: const Icon(Icons.bluetooth_outlined),
                                         // color: statusColor,
@@ -241,6 +242,7 @@ class _HomePageState extends State <HomePage> {
                                         },
                                         splashColor: Colors.pink,
                                     ), 
+                                    const SizedBox(height: 10),
                                     FloatingActionButton.extended(
                                         onPressed: (!eSenseManager.connected)
                                             ? null
