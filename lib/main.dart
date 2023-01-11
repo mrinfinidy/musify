@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musify/bottomNavigation/bottomNavigation.dart';
+import 'package:musify/pages/libraryPage.dart';
 import 'package:musify/pages/musifyPage.dart';
 import 'package:musify/pages/homePage.dart';
 
@@ -19,9 +20,12 @@ class _MusifyState extends State<Musify> {
 
     final List<Widget> _body = [
         HomePage(),
+        LibraryPage(),
+        /*
         const MusifyPage(
             text: 'Tab2',
         ), 
+        */
     ];
 
     final _homeNavigatorKey = GlobalKey<NavigatorState>();
