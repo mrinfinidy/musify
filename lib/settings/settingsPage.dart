@@ -15,12 +15,18 @@ class _SettingsPageState extends State<SettingsPage> {
     Widget build(BuildContext context) {
         return Scaffold(
             appBar: AppBar(
-                title: const Text('Musify - Settings'),
+                title: const Center(
+                    child: 
+                        Text('Musify - Settings'),
+                ), 
                 backgroundColor: Colors.black,
                 foregroundColor: Colors.white,
             ),
             body: Center(
-                child: Text('Settings' + widget.text),
+                child: Text(
+                    widget.text,
+                    style: TextStyle(fontSize: 20),
+                ),
             ),
         );
     }
