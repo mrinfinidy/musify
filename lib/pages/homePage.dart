@@ -172,12 +172,26 @@ class _HomePageState extends State <HomePage> {
         return await audioQuery.getSongs();
     }
 
+
+
     setAudioSource() async {
-        List<SongInfo> songs = await _getSongs();
-        print('SONG PATH: ' + songs[0].filePath);
+        List<SongInfo> songs = await _getSongs();      
+        ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: []);
+
+        if (songs.isNotEmpty) {
+            for (SongInfo song in songs) {
+                playlist.add(AudioSource.uri(Uri.parse(song.uri)));
+            }
+            await audioPlayer.setAudioSource(playlist);
+        } else {
+            await audioPlayer.setUrl('https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_500KB_MP3.mp3');
+        }
+
+        /*
         songs.isNotEmpty
                 ? await audioPlayer.setAudioSource(AudioSource.uri(Uri.parse(songs[0].uri)))
                 : await audioPlayer.setUrl('https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_500KB_MP3.mp3');
+        */
     }
     
     @override
