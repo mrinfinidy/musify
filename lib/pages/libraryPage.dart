@@ -14,8 +14,18 @@ class _LibraryPageState extends State <LibraryPage> {
     final FlutterAudioQuery audioQuery = FlutterAudioQuery();
     List<SongInfo> songs = [];
 
-    void getSongs() async {
+    Future<void> getSongs() async {
         songs = await audioQuery.getSongs();
+    }
+
+    @override
+    void initState() {
+        getSongs().then((_) {
+            setState(() {
+              
+            });
+        });
+        super.initState();
     }
 
     @override
@@ -36,22 +46,15 @@ class _LibraryPageState extends State <LibraryPage> {
                     )
                 ],
             ),
-            body: Center(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                        FloatingActionButton.extended(
-                            onPressed: () {
-                                setState(() {
-                                    getSongs();
-                                });
-                            },
-                            icon: Icon(Icons.music_note),
-                            label: Text('Load songs from device storage'), 
-                        ), 
-                        Text(songs.toString()),
-                    ], 
-                ),
+            body: ListView.builder(
+                itemCount: songs.length,
+                itemBuilder: (BuildContext context, int index) {
+                    return ListTile(
+                        leading: const Icon(Icons.music_note),
+                        trailing: const Icon((Icons.play_arrow)),
+                        title: Text(songs[index].title),
+                    );
+                },
             ),
         ); 
     }
