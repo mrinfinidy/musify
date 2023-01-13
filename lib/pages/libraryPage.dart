@@ -54,14 +54,10 @@ class _LibraryPageState extends State <LibraryPage> {
                 itemCount: songs.length,
                 itemBuilder: (BuildContext context, int index) {
                     return ListTile(
-                        leading: const Icon(
-                            Icons.music_note, 
-                            color: Colors.black,
-                        ),
-                        trailing: const Icon(
-                            Icons.play_arrow,
-                            color: Colors.black,
-                        ),
+                        iconColor: Colors.black,
+                        textColor: Colors.black,
+                        leading: const Icon(Icons.music_note),
+                        trailing: const Icon(Icons.play_arrow),
                         title: Text(songs[index].title),
                         onTap: () {
                             audioPlayerManager.playAudio(index);
