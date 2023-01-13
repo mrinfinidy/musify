@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:musify/Audio/AudioPlayerManager.dart';
+import 'package:musify/pages/homePage.dart';
 import 'package:musify/settings/settingsPage.dart';
 
 class LibraryPage extends StatefulWidget {
@@ -13,6 +16,7 @@ class LibraryPage extends StatefulWidget {
 class _LibraryPageState extends State <LibraryPage> {
     final FlutterAudioQuery audioQuery = FlutterAudioQuery();
     List<SongInfo> songs = [];
+    final AudioPlayerManager audioPlayerManager = AudioPlayerManager();
 
     Future<void> getSongs() async {
         songs = await audioQuery.getSongs();
@@ -50,9 +54,18 @@ class _LibraryPageState extends State <LibraryPage> {
                 itemCount: songs.length,
                 itemBuilder: (BuildContext context, int index) {
                     return ListTile(
-                        leading: const Icon(Icons.music_note),
-                        trailing: const Icon((Icons.play_arrow)),
+                        leading: const Icon(
+                            Icons.music_note, 
+                            color: Colors.black,
+                        ),
+                        trailing: const Icon(
+                            Icons.play_arrow,
+                            color: Colors.black,
+                        ),
                         title: Text(songs[index].title),
+                        onTap: () {
+                            audioPlayerManager.playAudio(AudioSource.uri(Uri.parse(songs[index].uri)));
+                        },
                     );
                 },
             ),

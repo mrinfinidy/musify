@@ -7,12 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:musify/Audio/AudioPlayerManager.dart';
 import 'package:musify/settings/settingsPage.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class HomePage extends StatefulWidget {
     @override
-    State<HomePage> createState() => _HomePageState();
+    State<HomePage> createState() => _HomePageState(); 
 }
 
 class _HomePageState extends State <HomePage> {
@@ -20,6 +21,7 @@ class _HomePageState extends State <HomePage> {
     bool isPlaying = false;
     Color statusColor = Colors.black;
     final audioPlayer = AudioPlayer();
+    AudioPlayerManager audioPlayerManager = AudioPlayerManager();
     // ESense
     String _deviceStatus = 'unknown';
     int _offsetX = 0;
@@ -166,33 +168,6 @@ class _HomePageState extends State <HomePage> {
     Future<void> _disconnectFromEsense() async {
         await eSenseManager.disconnect();
     }
-
-    Future<List<SongInfo>> _getSongs() async {
-        final FlutterAudioQuery audioQuery = FlutterAudioQuery();
-        return await audioQuery.getSongs();
-    }
-
-
-
-    setAudioSource() async {
-        List<SongInfo> songs = await _getSongs();      
-        ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: []);
-
-        if (songs.isNotEmpty) {
-            for (SongInfo song in songs) {
-                playlist.add(AudioSource.uri(Uri.parse(song.uri)));
-            }
-            await audioPlayer.setAudioSource(playlist);
-        } else {
-            await audioPlayer.setUrl('https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_500KB_MP3.mp3');
-        }
-
-        /*
-        songs.isNotEmpty
-                ? await audioPlayer.setAudioSource(AudioSource.uri(Uri.parse(songs[0].uri)))
-                : await audioPlayer.setUrl('https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_500KB_MP3.mp3');
-        */
-    }
     
     @override
     void dispose() {
@@ -294,15 +269,15 @@ class _HomePageState extends State <HomePage> {
                                     splashColor: Colors.pink,
                                     onPressed: () async {
                                         if (isPlaying) {
-                                            audioPlayer.pause();
+                                            audioPlayerManager.pauseAudioPlayer();
                                             setState(() {
                                                 isPlaying = false;
                                             });
                                         } else {
-                                            if (audioPlayer.audioSource == null) {
-                                                setAudioSource();
-                                            } 
-                                            audioPlayer.play();
+                                            if (audioPlayerManager.getAudioSource() == null) {
+                                                audioPlayerManager.setAudioSource();                      
+                                            }
+                                            audioPlayerManager.playAudioPlayer();
                                             setState(() {
                                                 isPlaying = true;
                                             });
