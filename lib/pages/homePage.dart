@@ -20,7 +20,6 @@ class _HomePageState extends State <HomePage> {
     FlutterBlue flutterBlue = FlutterBlue.instance;
     bool isPlaying = false;
     Color statusColor = Colors.black;
-    final audioPlayer = AudioPlayer();
     AudioPlayerManager audioPlayerManager = AudioPlayerManager();
     // ESense
     String _deviceStatus = 'unknown';
@@ -41,7 +40,6 @@ class _HomePageState extends State <HomePage> {
     void initState() {
         super.initState();
         _listenToESense();
-        audioPlayer.setLoopMode(LoopMode.all);
     }
 
     Future<void> _askForPermissions() async {
@@ -116,10 +114,10 @@ class _HomePageState extends State <HomePage> {
 
     //
     void _decreaseVolume5Sec() {
-        audioPlayer.setVolume(0.2);
+        audioPlayerManager.setVolume(0.2);
         Timer(
             const Duration(seconds: 5),
-            () => audioPlayer.setVolume(1),
+            () => audioPlayerManager.setVolume(1),
         );
     }
 
@@ -171,7 +169,6 @@ class _HomePageState extends State <HomePage> {
     
     @override
     void dispose() {
-        audioPlayer.dispose();
         _pauseListenToSensorEvents();
         eSenseManager.disconnect();
         super.dispose();

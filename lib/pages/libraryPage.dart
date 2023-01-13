@@ -64,7 +64,7 @@ class _LibraryPageState extends State <LibraryPage> {
                         ),
                         title: Text(songs[index].title),
                         onTap: () {
-                            audioPlayerManager.playAudio(AudioSource.uri(Uri.parse(songs[index].uri)));
+                            audioPlayerManager.playAudio(index);
                         },
                     );
                 },

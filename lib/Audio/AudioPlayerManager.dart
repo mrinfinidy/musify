@@ -23,8 +23,9 @@ class AudioPlayerManager {
         }
     }
 
-    void playAudio(AudioSource audioSource) {
-        audioPlayer.seek(Duration.zero);
+    void playAudio(int audioIndex) {
+        audioPlayer.seek(Duration.zero, index: audioIndex);
+        audioPlayer.play();
     }
 
     void playAudioPlayer() {
@@ -33,6 +34,14 @@ class AudioPlayerManager {
 
     void pauseAudioPlayer() {
         audioPlayer.pause();
+    }
+
+    void setVolume(double volume) {
+        audioPlayer.setVolume(volume);
+    }
+
+    bool isPlaying() {
+        return audioPlayer.playing;
     }
 
     getAudioSource() {
