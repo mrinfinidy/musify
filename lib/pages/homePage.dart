@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:esense_flutter/esense.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musify/settings/settingsPage.dart';
@@ -166,8 +167,17 @@ class _HomePageState extends State <HomePage> {
         await eSenseManager.disconnect();
     }
 
+    Future<List<SongInfo>> _getSongs() async {
+        final FlutterAudioQuery audioQuery = FlutterAudioQuery();
+        return await audioQuery.getSongs();
+    }
+
     setAudioSource() async {
-        await audioPlayer.setUrl('https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_500KB_MP3.mp3');
+        List<SongInfo> songs = await _getSongs();
+        print('SONG PATH: ' + songs[0].filePath);
+        songs.isNotEmpty
+                ? await audioPlayer.setAudioSource(AudioSource.uri(Uri.parse(songs[0].uri)))
+                : await audioPlayer.setUrl('https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_500KB_MP3.mp3');
     }
     
     @override
