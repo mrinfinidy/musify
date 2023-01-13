@@ -250,6 +250,7 @@ class _HomePageState extends State <HomePage> {
                                         icon: (!sampling) ? const Icon(Icons.play_arrow) : const Icon(Icons.pause),
                                         label: (!sampling) ? const Text('Start Sensors') : const Text('Stop Sensors'),
                                         backgroundColor: (!sampling) ? Colors.black : Colors.pink,
+                                        foregroundColor: (!sampling) ? Colors.white : Colors.black,
                                         splashColor: Colors.pink,
                                     ),
                                 ],
