@@ -1,6 +1,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:esense_flutter/esense.dart';
 import 'package:flutter/material.dart';
@@ -205,39 +206,43 @@ class _HomePageState extends State <HomePage> {
                                     Text('Accelerometer: $_accel'),
                                     Text('Gyroscope: $_gyro'),
                                     const SizedBox(height: 10),
-                                    IconButton(
-                                        icon: const Icon(Icons.bluetooth_outlined),
-                                        // color: statusColor,
-                                        color: eSenseConnected ? Colors.pink : Colors.black,
-                                        onPressed: () async {
-                                            if (await flutterBlue.isOn && await Permission.locationWhenInUse.serviceStatus.isEnabled) {
-                                                eSenseConnected ? _disconnectFromEsense() : _connectToEsense();
-                                            } else {
-                                                showDialog(
-                                                    context: context,
-                                                    barrierDismissible: false,
-                                                    builder: (BuildContext context) {
-                                                        return AlertDialog(
-                                                            title: const Text('Bluetooth and GPS'),
-                                                            content: const SingleChildScrollView(
-                                                                child: Text('Please enable Bluetooth and Location service (GPS) to connect to eSense'),  
-                                                            ),
-                                                            actions: <Widget>[
-                                                                TextButton(
-                                                                    child: const Text('Ok'),
-                                                                    onPressed: () {
-                                                                        Navigator.of(context).pop();
-                                                                    },
-                                                                    style: TextButton.styleFrom(foregroundColor: Colors.black),
+                                    CircleAvatar(
+                                        radius: 20,
+                                        backgroundColor: eSenseConnected ? Colors.pink : Colors.black,
+                                        child: IconButton(
+                                            icon: const Icon(Icons.bluetooth_outlined),
+                                            color: eSenseConnected ? Colors.black : Colors.white,
+                                            // color: Colors.pink,
+                                            onPressed: () async {
+                                                if (await flutterBlue.isOn && await Permission.locationWhenInUse.serviceStatus.isEnabled) {
+                                                    eSenseConnected ? _disconnectFromEsense() : _connectToEsense();
+                                                } else {
+                                                    showDialog(
+                                                        context: context,
+                                                        barrierDismissible: false,
+                                                        builder: (BuildContext context) {
+                                                            return AlertDialog(
+                                                                title: const Text('Bluetooth and GPS'),
+                                                                content: const SingleChildScrollView(
+                                                                    child: Text('Please enable Bluetooth and Location service (GPS) to connect to eSense'),  
                                                                 ),
-                                                            ],
-                                                        );
-                                                    }
-                                                );
-                                            }
-                                        },
-                                        splashColor: Colors.pink,
-                                    ), 
+                                                                actions: <Widget>[
+                                                                    TextButton(
+                                                                        child: const Text('Ok'),
+                                                                        onPressed: () {
+                                                                            Navigator.of(context).pop();
+                                                                        },
+                                                                        style: TextButton.styleFrom(foregroundColor: Colors.black),
+                                                                    ),
+                                                                ],
+                                                            );
+                                                        }
+                                                    );
+                                                }
+                                            },
+                                            splashColor: Colors.pink,
+                                        ), 
+                                    ),
                                     const SizedBox(height: 10),
                                     FloatingActionButton.extended(
                                         onPressed: (!eSenseManager.connected)
@@ -262,7 +267,7 @@ class _HomePageState extends State <HomePage> {
                                         isPlaying ? Icons.pause_circle : Icons.play_circle, 
                                     ),
                                     iconSize: 50,
-                                    color: Colors.pink,
+                                    color: isPlaying ? Colors.pink : Colors.white,
                                     splashColor: Colors.pink,
                                     onPressed: () async {
                                         if (isPlaying) {
