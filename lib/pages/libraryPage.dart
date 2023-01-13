@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:musify/settings/settingsPage.dart';
 
 class LibraryPage extends StatefulWidget {
@@ -10,6 +11,13 @@ class LibraryPage extends StatefulWidget {
 }
 
 class _LibraryPageState extends State <LibraryPage> {
+    final FlutterAudioQuery audioQuery = FlutterAudioQuery();
+    List<SongInfo> songs = [];
+
+    void getSongs() async {
+        songs = await audioQuery.getSongs();
+    }
+
     @override
     Widget build(BuildContext context) {
         return Scaffold(
@@ -31,21 +39,17 @@ class _LibraryPageState extends State <LibraryPage> {
             body: Center(
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const <Widget>[
-                        Text(
-                            'Coming soon...',
-                            style: TextStyle(
-                                color: Colors.pink,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                            ), 
-                        ),
-                        Text(
-                            'Load mp3 files from this device',
-                            style: TextStyle(
-                                fontSize: 15,
-                            ),
-                        ),
+                    children: <Widget>[
+                        FloatingActionButton.extended(
+                            onPressed: () {
+                                setState(() {
+                                    getSongs();
+                                });
+                            },
+                            icon: Icon(Icons.music_note),
+                            label: Text('Load songs from device storage'), 
+                        ), 
+                        Text(songs.toString()),
                     ], 
                 ),
             ),
