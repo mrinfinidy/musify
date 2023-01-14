@@ -56,7 +56,6 @@ class _HomePageState extends State <HomePage> {
         if (Platform.isAndroid) await _askForPermissions();
 
         eSenseManager.connectionEvents.listen((event) {
-            print('connect CONNECTION event: $event');
             if (event.type == ConnectionType.connected) _listenToESenseEvents();
 
             setState(() {
@@ -85,7 +84,6 @@ class _HomePageState extends State <HomePage> {
     
     Future<void> _connectToEsense() async {     
         if (!eSenseConnected) {
-            print('connecting');
             eSenseConnected = await eSenseManager.connect();
             setState(() {
                 _deviceStatus = eSenseConnected ? 'connecting...' : 'connction failed';
@@ -95,7 +93,6 @@ class _HomePageState extends State <HomePage> {
 
     void _listenToESenseEvents() async {
         eSenseManager.eSenseEvents.listen((event) {
-            print('listen ESENSE event: $event');
             setState(() {
                 switch (event.runtimeType) {
                     case BatteryRead:
@@ -138,11 +135,9 @@ class _HomePageState extends State <HomePage> {
 
     StreamSubscription? subscription;
     void _startListenToSensorEvents() async {
-        print('setting sampling frequency');
         await eSenseManager.setSamplingRate(10);
 
         subscription = eSenseManager.sensorEvents.listen((event) {
-            print('subscribe SENSOR event: $event');
             setState(() {
                 // _event = event.toString();
                 _accel = event.accel.toString();
